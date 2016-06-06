@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>DocumentWordParser</title>
+<link rel="shortcut icon" href="https://raw.githubusercontent.com/lazyrodi/misc/master/assets/logo_lazyrodi/favicon.ico"/>
+
+<script type="text/javascript">
+function clickSubmit() {
+	var result_canvas = document.getElementById('result-canvas');
+	var doc = document.getElementById('doc-textarea').value;
+	
+	if (doc === '') {
+		result_canvas.innerHTML = '';
+		result_canvas.style.display = "none";
+	} else {
+		result_canvas.innerHTML = fill_data(parse_doc(doc));
+		result_canvas.style.display = "block";
+	}
+};
+
+function fill_data(objarr) {
+	var ret = "<table class='table-result'><tr><th>Word</th><th>Frequency</th></tr>";
+	
+	objarr.sort(function(a, b) {
+		return b.value - a.value;
+	});
+	
+	for (var i = 0; i < objarr.length; i++) {
+		ret += "<tr><td width='200px'>" + objarr[i].key + "</td><td align='right'>" + objarr[i].value + "</td></tr>";
+	}
+	
+	return ret + "</table>";
+}
+
+function parse_doc(doc) {
+	var obj = {};
+	var tmp = [];
+	var objarr = [];
+	
+	doc = doc.toLowerCase().replace(/\,|\.|\?|\!|\'|\"|\[|\]|\(|\)|\{|\}/gi,"");
+	tmp = doc.split(/ |\n|\t/);
+
+	for(var i = 0; i < tmp.length; i++) {
+		var item = tmp[i];
+
+		if (item !== '') {
+			if (obj.hasOwnProperty(item)) {
+				obj[item]++;
+			} else {
+				obj[item] = 1;
+			}			
+		}
+	}
+
+	for (var pr in obj) {
+		objarr.push({key:pr, value:obj[pr]});
+	}
+
+	return objarr;
+}
+
+window.onload = function () {
+	document.getElementById('result-canvas').style.display = "none";
+}
+</script>
+
+<style type="text/css">
+body {
+	font-family: consolas;
+	background-color: #607D8B;
+}
+
+textarea, li {
+	font-family: consolas;
+	font-size: 10pt;
+}
+
+header {
+	color: #FFFFFF;
+	height: 70px;
+}
+
+footer {
+	clear: both;
+	height: 70px;
+	font-size: 9pt;
+	color: #FFFFFF;
+	margin-top: 5px;
+}
+
+p {
+	margin-left: 5px;
+}
+
+#readme,
+#doc-textarea,
+#result-canvas {
+	border: 1px solid #aaaaaa;
+	border-radius: 3px;
+}
+
+#content-area {
+	background-color: #F7F7F7;
+	padding: 10px;
+	overflow: hidden;
+}
+
+#readme {
+	background-color: #607D8B;
+	color: #FFFFFF;
+	padding: 1px;
+	margin-bottom: 10px;
+}
+
+#column-left {
+	width: 49%;
+	float: left;
+}
+
+#column-right {
+	width: 50%;
+	float: right;
+}
+
+#doc-textarea {
+	width: 100%;
+	height: 300px;
+	resize: none;
+}
+
+#btn-submit {
+	width: 100px;
+	height: 30px;
+	margin-top: 5px;
+	background-color: #4CAF50;
+	color: #FFFFFF;
+	border: none;
+	cursor: pointer;
+	float: right;
+}
+
+#result-canvas {
+	font-size: 10pt;
+	overflow-x: auto;
+}
+
+#table-result {
+	margin: 5px;
+}
+</style>
+
+</head>
+<body>
+<header>
+	<h1>Document Word Parser</h1>
+</header>
+
+<div id="content-area">
+	<div id="readme">
+	<p>Parse the document word by word.</p>
+		<ol>
+			<li>Input document in textarea left side.</li>
+			<li>Run</li>
+			<li>You can see word-frequency on the right side.<br>
+			Ignore uppercase/lowercase and some characters-, . ' " ( ) { } [ ] ? !-.</li>
+		</ol>
+	</div>
+
+	<div id="column-left">
+		<form>
+			<textarea id="doc-textarea" placeholder="Copy document to here." autofocus></textarea>
+			<input type="button" id="btn-submit" value="Run" onclick="clickSubmit()"/>
+		</form>
+	</div>
+
+	<div id="column-right">
+		<div id="result-canvas" id="result-canvas">
+		</div>
+	</div>
+</div>
+
+<footer>
+	<div align="center">
+		<i>lazyrodi@gmail.com</i>, 2016
+	</div>
+</footer>
+</body>
+</html>
