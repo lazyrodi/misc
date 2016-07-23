@@ -3,6 +3,10 @@
 ## Assets
  - Personal assets.
 
+### svg
+  - LG CI (unofficial, personal practice)
+    ![](https://github.com/lazyrodi/misc/blob/master/assets/svg/LG_CI.svg)
+
 ## DocumentWordParser
 
 Parse the document word by word.
