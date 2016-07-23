@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="80" height="80">
+
+  <circle cx="40" cy="40" r="40" fill="#C3013B" /> <!-- background circle -->
+  <circle cx="40" cy="40" r="32" style="fill:none;stroke:#FFFFFF;stroke-width:3" /> <!-- inner circle -->
+  <path d="M40,8 A32,32 0 0,1 72,39" style="stroke:#C3013B;stroke-width:4;fill:none" /> <!-- masking -->
+  <line x1="50" y1="40" x2="73.5" y2="40" style="stroke:#FFFFFF;stroke-width:3" />
+
+  <circle cx="25" cy="27" r="5" fill="#FFFFFF" /> <!-- eye -->
+  <polyline points="40,22 40,58 50,58" style="fill:none;stroke:#FFFFFF;stroke-width:3" /> <!-- L -->
+
+</svg>
