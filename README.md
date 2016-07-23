@@ -5,7 +5,7 @@
 
 ### svg
   - LG CI (unofficial, personal practice)
-    ![](https://github.com/lazyrodi/misc/blob/master/assets/svg/LG_CI.svg)
+    ![](http://lazyrodi.github.io/images/LG_CI.svg)
 
 ## DocumentWordParser
 
