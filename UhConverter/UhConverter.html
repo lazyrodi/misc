@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Uh... Converter</title>
+<link rel="shortcut icon" href="https://raw.githubusercontent.com/lazyrodi/misc/master/assets/logo_lazyrodi/favicon.ico"/>
+
+<script type="text/javascript">
+function clickSubmit() {
+    var inputData = document.getElementById("input-text").value;
+
+    if (inputData == '') {
+        document.getElementById('result-canvas').innerHTML = "No Input Data.";
+        document.getElementById('result-canvas').style.display = "block";
+        return;
+    }
+
+    var dataArr = strToArr(inputData); // input text data to Array.
+    var dataType = getCheckedRadioValue("datatype"); // ex. '1':bin, '2':dec, '3':oct, '4':hex, '5':ascii
+
+    if (dataType != '10') {
+        dataArr = toDec(dataArr, dataType);
+    }
+
+    drawTable(dataArr);
+}
+
+function strToArr(inputData) {
+    var arr = [];
+
+    if (inputData[0] == '{' && inputData[inputData.length - 1] == '}') {
+        arr = inputData.substring(1, inputData.length - 1).replace(/ /gi, '').split(',');
+    } else {
+        arr[0] = inputData;
+    }
+
+    return arr;
+}
+
+function getCheckedRadioValue(name) {
+    var e = document.getElementsByName(name);
+
+    for (var i = 0; i < e.length; i++) {
+        if (e[i].checked) {
+            return e[i].value;
+        }
+    }
+}
+
+function toDec(dataArr, dataType) {
+    var arr = [];
+
+    if (dataType == 'a') {
+        for (var i = 0; i < dataArr.length; i++) {
+            arr[i] = dataArr[i].charCodeAt(0);
+        }
+    } else {
+        for (var i = 0; i < dataArr.length; i++) {
+            arr[i] = parseInt(dataArr[i], dataType).toString();
+        }
+    }
+
+    return arr;
+}
+
+function drawTable(dataArr) {
+    var resultCanvas = document.getElementById('result-canvas');
+    var bgColor = ['#FAFAFA', '#EAEAEA'];
+
+    var ret = "<table id='table-result' cellpadding='0' cellspacing='0' width='100%'>" +
+                "<tr>" +
+                    "<th>Binary</th>" +
+                    "<th>Decimal</th>" +
+                    "<th>Octal</th>" +
+                    "<th>Hexadecimal</th>" +
+                    "<th>ASCII</th>" +
+                "</tr>";
+
+    for (var row = 0; row < dataArr.length; row++) {
+        ret += "<tr class='tr-custom' bgcolor='" + bgColor[row % 2] + "'>";
+
+        for (var col = 1; col < 6; col++) {
+            ret += "<td align='center'>" +
+                      convertData(col, dataArr[row]) +
+                    "</td>";
+        }
+        
+        ret += "</tr>";
+    }
+
+    ret += "</table>";
+
+    resultCanvas.innerHTML = ret;
+    resultCanvas.style.display = "block";    
+}
+
+function convertData(type, data) {
+    switch (type) {
+        case 1: // binary
+            return parseInt(data).toString(2);
+            break;
+        case 2: // decimal
+            return data;
+            break;
+        case 3: // octal
+            return parseInt(data).toString(8);
+            break;
+        case 4: // hexadecimal
+            return toHexadecimal(data);
+            break;        
+        case 5: // ascii
+            return String.fromCharCode(parseInt(data));
+            break;
+        default:
+            return 'input error';
+    }
+}
+
+function toHexadecimal(data) {
+    var t = parseInt(data).toString(16);
+    if (t.length % 2 == 1) {
+        t = '0' + t;
+    }
+    return '0x' + t;
+}
+
+window.onload = function () {
+    document.getElementById('result-canvas').style.display = "none";
+}
+</script>
+
+<style type="text/css">
+body {
+    font-family: consolas;
+    background-color: #607D8B;
+}
+
+textarea, li {
+    font-family: consolas;
+    font-size: 10pt;
+}
+
+header {
+    color: #FFFFFF;
+    height: 70px;
+}
+
+footer {
+    clear: both;
+    height: 70px;
+    font-size: 9pt;
+    color: #FFFFFF;
+    margin-top: 5px;
+}
+
+p {
+    margin-left: 5px;
+}
+
+#readme,
+#input-text,
+#result-fieldset,
+#radio-area {
+    border: 1px solid #aaaaaa;
+    border-radius: 3px;
+}
+
+#content-area,
+#radio-area {
+    background-color: #F7F7F7;
+    padding: 10px;
+    overflow: hidden;
+}
+
+#readme {
+    background-color: #607D8B;
+    color: #FFFFFF;
+    padding: 1px;
+    margin-bottom: 10px;
+}
+
+#column-input {
+    width: 100%;
+}
+
+#column-output {
+    width: 100%;
+    margin-top: 50px;
+    clear: both;
+}
+
+#input-area {
+    padding: 2px;
+    margin: 10px 0px 5px 0px;
+}
+
+#input-text {
+    width: 100%;
+    height: 30px;
+    padding: 0px 5px 0px 5px;
+    font-size: 12pt;
+    resize: none;
+    
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+       -moz-box-sizing: border-box; /* Firefox, other Gecko */
+            box-sizing: border-box; /* Opera/IE 8+ */
+}
+
+#btn-submit {
+    width: 100px;
+    height: 30px;
+    background-color: #4CAF50;
+    color: #FFFFFF;
+    border: none;
+    cursor: pointer;
+    float: right;
+}
+
+#column-output {
+    font-size: 12pt;
+    overflow-x: auto;
+}
+
+#table-result th,
+#table-result td {
+    border: 1px solid #000000;
+    padding: 0px;
+    margin: 0px;
+}
+
+#table-result th {
+    background-color: #607D8B;
+    color: #FFFFFF;
+    font-size: 13pt;
+}
+
+#example-table {
+    margin: 0px 0px 10px 40px;
+}
+
+#example-table th,
+#example-table td {
+    font-size: 10pt;
+    border: 1px solid #FFFFFF;
+    padding: 2px 5px 2px 5px;
+}
+
+.tr-custom:hover {
+    background-color: #B0CDDB;
+}
+
+.highlight {
+    color: #102D3B;
+}
+
+</style>
+
+</head>
+<body>
+<header>
+    <h1>Uh... Converter</h1>
+</header>
+
+<div id="content-area">
+    <div id="readme">
+        <p>Uh... Converter.</p>
+        <ol>
+            <li>Select Input Data Type.</li>
+            <li>Input code. You can input single data or array.<br />i.e. array format is <b class="highlight">{1, 2, 3, 4, 5}</b>. MUST input '<span class="highlight">{</span>', '<span class="highlight">}</span>' and seperator '<span class="highlight">,</span>'</li>
+            <li>Run</li>
+            <li>You can see converted results.</li>
+        </ol>
+        <table id="example-table" cellpadding="0" cellspacing="0">
+            <tr>
+                <th>Example</th>
+                <th>Single</th>
+                <th>Array</th>
+            </tr>
+            <tr>
+                <td>Binary</td>
+                <td>100011</td>
+                <td>{100011, 100100, 111010}</td>
+            </tr>
+            <tr>
+                <td>Decimal</td>
+                <td>35</td>
+                <td>{35, 36, 58}</td>
+            </tr>
+            <tr>
+                <td>Octal</td>
+                <td>43</td>
+                <td>{43, 44, 72}</td>
+            </tr>
+            <tr>
+                <td>Hexadecimal</td>
+                <td>23</td>
+                <td>{23, 24, 3a}</td>
+            </tr>
+            <tr>
+                <td>ASCII</td>
+                <td>#</td>
+                <td>{#, $, :}</td>
+            </tr>
+        </table>
+
+    </div>
+
+    <div id="column-input">
+        <form>
+            <fieldset id="radio-area">
+                <legend>Select Data Type</legend>
+                <input type="radio" name="datatype" value="2">Binary
+                <input type="radio" name="datatype" value="10" checked>Decimal
+                <input type="radio" name="datatype" value="8">Octal
+                <input type="radio" name="datatype" value="16">Hexadecimal
+                <input type="radio" name="datatype" value="a">ASCII
+            </fieldset>
+
+            <div id="input-area">
+                <input type="text" id="input-text" name="input-text" placeholder="Input data." onkeypress="if(event.keyCode==13) {clickSubmit(); return false;}" autofocus>
+            </div>
+
+            <input type="button" id="btn-submit" value="Run" onclick="clickSubmit()"/>
+        </form>
+    </div>
+
+    <div id="column-output">
+        <fieldset id="result-fieldset">
+            <legend>Result</legend>
+
+            <div id="result-canvas">
+
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+<footer>
+    <div align="center">
+        <i>lazyrodi@gmail.com</i>, 2016
+    </div>
+</footer>
+</body>
+</html>
