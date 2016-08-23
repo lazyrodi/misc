@@ -1,0 +1,24 @@
+# Author: Lazy Rodriguez (lazyrodi@gmail.com)
+# Refer to https://www.gnu.org/software/screen/manual/screen.html
+
+activity "Activity in %t(%n)"   # Set the activity notification message
+allpartial off          # Set all windows to partial refresh
+altscreen on            # Enable support for "alternate screen" capability in all windows
+attrcolor b ".I"        # Allow bold colors
+autodetach on           # detach on hangup
+defencoding UTF-8       # Select default window encoding to UTF-8
+defbce on               # Erase background with current bg color
+defflow off             # Select default flow control behavior
+deflogin off            # Select default utmp logging behavior
+defscrollback 10000     # Cache 10000 lines for scroll back
+defutf8 on              # Select default character encoding
+msgminwait 2            # Set minimum mesasge wait
+msgwait 5               # Set default message wait
+startup_message off     # Do not display the copyright page
+term screen             # Set $TERM for new windows
+vbell off               # No annoying audible bell 
+bindkey "^[," prev      # Alt + ,  to prev terminal
+bindkey "^[." next      # Alt + .  to next terminal
+bind . eval 'source $HOME/.screenrc' 'echo "$HOME/.screenrc reloaded"'
+caption always "%{gK} %-w%{kW}%n %t%{-}%{-u}%+w" # Display of the window captions
+
