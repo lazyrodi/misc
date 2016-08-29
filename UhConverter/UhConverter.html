@@ -95,21 +95,29 @@ function drawTable(dataArr) {
 }
 
 function convertData(type, data) {
+    var correction = parseInt(data);
+
+    if (correction < 0) {
+        if (correction > -129) {
+            correction += 256;
+        }
+    }
+
     switch (type) {
         case 1: // binary
-            return parseInt(data).toString(2);
+            return parseInt(correction).toString(2);
             break;
         case 2: // decimal
             return data;
             break;
         case 3: // octal
-            return parseInt(data).toString(8);
+            return parseInt(correction).toString(8);
             break;
         case 4: // hexadecimal
-            return toHexadecimal(data);
+            return toHexadecimal(correction);
             break;        
         case 5: // ascii
-            return String.fromCharCode(parseInt(data));
+            return String.fromCharCode(parseInt(correction));
             break;
         default:
             return 'input error';
